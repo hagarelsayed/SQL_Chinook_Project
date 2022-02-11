@@ -105,11 +105,64 @@ from orders
 -- Your solution should use both aggregation and a mathematical operator.
 -- My solution
 select standard_amt_usd,
-standard_qty,
-standard_amt_usd/standard_qty as amt_per_qty_unit
-from orders
+standard_qty,from orders
 where standard_qty > 0
 
 -- right answer
 SELECT SUM(standard_amt_usd)/SUM(standard_qty) AS standard_price_per_unit
 FROM orders;
+
+-- Group By
+
+-- The key takeaways here:
+
+-- GROUP BY can be used to aggregate data within subsets of the data. 
+-- For example, grouping for different accounts, different regions, or different
+--  sales representatives.
+-- Any column in the SELECT statement that is not within an aggregator must be in
+--  the GROUP BY clause.
+-- The GROUP BY always goes between WHERE and ORDER BY.
+-- ORDER BY works like SORT in spreadsheet software.
+
+-- GROUP BY - Expert Tip
+-- Before we dive deeper into aggregations using GROUP BY statements,
+-- it is worth noting that SQL evaluates the aggregations before the LIMIT clause.
+-- If you don’t group by any columns, you’ll get a 1-row result—no problem there.
+-- If you group by a column with enough unique values that it exceeds the
+-- LIMIT number, the aggregates will be calculated, and then some rows will 
+-- simply be omitted from the results.
+-- standard_amt_usd/standard_qty as amt_per_qty_unit
+
+
+-- This is actually a nice way to do things because you know you’re going to get
+--  the correct aggregates. If SQL cuts the table down to 100 rows, then performed
+--   the aggregations, your results would be substantially different. The above 
+--   query’s results exceed 100 rows, so it’s a perfect example.
+--    In the next concept, use the SQL environment to try removing the LIMIT and 
+--    running it again to see what changes.
+
+-- Query 2:
+SELECT account_id,
+       SUM(standard_qty) AS standard,
+       SUM(gloss_qty) AS gloss,
+       SUM(poster_qty) AS poster
+FROM orders
+GROUP BY account_id
+ORDER BY account_id
+
+-- GROUP BY Note
+
+-- One part that can be difficult to recognize is when it might be easiest to use 
+-- an aggregate or one of the other SQL functionalities. Try some of the below to
+--  see if you can differentiate to find the easiest solution.
+
+-- Which account (by name) placed the earliest order? Your solution should have 
+-- the account name and the date of the order.
+
+
+-- Find the total sales in usd for each account. You should include two columns - the total sales for each company's orders in usd and the company name.
+Via what channel did the most recent (latest) web_event occur, which account was associated with this web_event? Your query should return only three values - the date, channel, and account name.
+Find the total number of times each type of channel from the web_events was used. Your final table should have two columns - the channel and the number of times the channel was used.
+Who was the primary contact associated with the earliest web_event?
+What was the smallest order placed by each account in terms of total usd. Provide only two columns - the account name and the total usd. Order from smallest dollar amounts to largest.
+Find the number of sales reps in each region. Your final table should have two columns - the region and the number of sales_reps. Order from the fewest reps to most reps.
