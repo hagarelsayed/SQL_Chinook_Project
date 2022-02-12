@@ -16,9 +16,9 @@ Media related data was created using real data from an iTunes Library. Customer 
 <summary>Lessons</summary>
 <br>
 <ol>
-<li><b>Lesson 1</b> | <a href="./Lesson1_basic_SQL.sql">Basic SQL</a></li>
-<li><b>Lesson 2</b> | <a href="./Lesson2_Join.sql">Join SQL</a></li>
-<li><b>Lesson 3</b> | <a href="./Lesson3_aggregation.sql">Aggregation SQL</a></li>
+<li><b>Lesson 2</b> | <a href="./Lesson1_basic_SQL.sql">Basic SQL</a></li>
+<li><b>Lesson 3</b> | <a href="./Lesson2_Join.sql">Join SQL</a></li>
+<li><b>Lesson 4</b> | <a href="./Lesson3_aggregation.sql">Aggregation SQL</a></li>
 </ol>
 </details>
 
