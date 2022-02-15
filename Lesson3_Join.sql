@@ -196,13 +196,13 @@ JOIN orders o
 ON o.account_id = a.id
 WHERE o.standard_qty > 100 AND o.poster_qty > 50
 ORDER BY unit_price DESC;
-What are the different channels used by account id 1001? Your final table should have only 2 columns: account name and the different channels. You can try SELECT DISTINCT to narrow down the results to only the unique values.
+-- What are the different channels used by account id 1001? Your final table should have only 2 columns: account name and the different channels. You can try SELECT DISTINCT to narrow down the results to only the unique values.
 SELECT DISTINCT a.name, w.channel
 FROM accounts a
 JOIN web_events w
 ON a.id = w.account_id
 WHERE a.id = '1001';
-Find all the orders that occurred in 2015. Your final table should have 4 columns: occurred_at, account name, order total, and order total_amt_usd.
+-- Find all the orders that occurred in 2015. Your final table should have 4 columns: occurred_at, account name, order total, and order total_amt_usd.
 SELECT o.occurred_at, a.name, o.total, o.total_amt_usd
 FROM accounts a
 JOIN orders o

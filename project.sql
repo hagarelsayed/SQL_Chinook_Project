@@ -27,3 +27,86 @@ select BillingCountry , sum(total)
 from invoice
 group by BillingCountry
 order by BillingCountry  
+
+-----------------
+-- My Questions--
+-----------------
+--Question 1 , part a
+-- -- Who is the most recent fresh employee? 
+select e.EmployeeId, e.LastName, e.FirstName,  max(e.hiredate ) as latest_joined_empl
+from Employee e
+
+-- Answer: 3	Peacock	Jane	2002-04-01 00:00:00
+
+-- another Solution without aggregation function
+select e.EmployeeId, e.LastName, e.FirstName,  e.hiredate 
+from Employee e
+order by e.hiredate 
+limit 1 
+
+--Question 1 , part b
+
+-- Who is the latest?
+select e.EmployeeId, e.LastName, e.FirstName,  min(e.hiredate ) as earliest_joined_empl
+from Employee e
+
+-- another Solution without aggregation function
+select e.EmployeeId, e.LastName, e.FirstName,  e.hiredate 
+from Employee e
+order by e.hiredate Desc
+limit 1 
+
+--Answer:  8	Callahan	Laura	2004-03-04 00:00:00
+--###############################################
+
+
+-- find the total albums for each artist. You should include two columns - the total albums for each
+--  artist and the artist name.
+
+select ar.name, count(al.)
+from album al
+JOIN artist ar 
+on ar.id = al.ArtistID
+group by ar.name
+
+-- Find the top three atristis with the highest number of albums. Your results should have two columns , one for the 
+--artist name and the other for the total number of albums, as well as three rows for the highest number of albums.
+
+select ar.name, count(al.Title) Album_Number
+from album al
+JOIN artist ar 
+on ar.ArtistID = al.ArtistID
+group by ar.name
+order by Album_number DESC
+limit 3
+
+
+
+
+So the key for this question is understanding that one country could have multiple values if more than one customer in this country have the maximum value in this country. To solve it:
+ Calculate the maximum value for a customer for each country
+ Calculate the total for each user in each country
+ Check if the total for the customer in the country is equal to the max for the country.
+
+Please not that the code below can be done in a more efficient way bit this is a detailed code with the steps above fore clarity.
+ WITH max_val AS
+ (SELECT t.country, MAX(mVal) AS maxim
+ FROM
+ (SELECT c.country, c.CustomerId, SUM(i.Total) as mVal
+ FROM Customer c
+ JOIN Invoice i
+ ON c.CustomerId = i.CustomerId
+ GROUP BY 1, 2) AS t
+ GROUP BY 1)
+ 
+ 
+ SELECT *
+ FROM max_val m
+ JOIN
+ (SELECT c.country, SUM(i.Total) as tVal, c.FirstName, c.LastName, c.CustomerId
+ FROM Customer c
+ JOIN Invoice i
+ ON c.CustomerId = i.CustomerId
+ GROUP BY 1, 5) AS table_val
+ ON table_val.country = m.Country
+ WHERE tVal = m.maxim

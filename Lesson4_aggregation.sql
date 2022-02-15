@@ -112,57 +112,84 @@ where standard_qty > 0
 SELECT SUM(standard_amt_usd)/SUM(standard_qty) AS standard_price_per_unit
 FROM orders;
 
--- Group By
+--min & max
+-- Functionally, MIN and MAX are similar to COUNT in that they can be used on non-numerical 
+-- columns. Depending on the column type, MIN will return the lowest number, earliest date, or 
+-- non-numerical value as early in the alphabet as possible. As you might suspect, MAX does the
+--  opposite—it returns the highest number, the latest date, or the non-numerical value closest
+--   alphabetically to “Z.”
+SELECT MIN(standard_qty) AS standard_min,
+       MIN(gloss_qty) AS gloss_min,
+       MIN(poster_qty) AS poster_min,
+       MAX(standard_qty) AS standard_max,
+       MAX(gloss_qty) AS gloss_max,
+       MAX(poster_qty) AS poster_max
+FROM   orders
 
--- The key takeaways here:
+Questions: MIN, MAX, & AVERAGE
+Use the SQL environment below to assist with answering the following questions. Whether you get stuck or you just want to double-check your solutions, my answers can be found at the top of the next concept.
 
--- GROUP BY can be used to aggregate data within subsets of the data. 
--- For example, grouping for different accounts, different regions, or different
---  sales representatives.
--- Any column in the SELECT statement that is not within an aggregator must be in
---  the GROUP BY clause.
--- The GROUP BY always goes between WHERE and ORDER BY.
--- ORDER BY works like SORT in spreadsheet software.
+-- When was the earliest order ever placed? You only need to return the date.
 
--- GROUP BY - Expert Tip
--- Before we dive deeper into aggregations using GROUP BY statements,
--- it is worth noting that SQL evaluates the aggregations before the LIMIT clause.
--- If you don’t group by any columns, you’ll get a 1-row result—no problem there.
--- If you group by a column with enough unique values that it exceeds the
--- LIMIT number, the aggregates will be calculated, and then some rows will 
--- simply be omitted from the results.
--- standard_amt_usd/standard_qty as amt_per_qty_unit
+select min(o.occurred_at) as earliest_order
+from orders o
+
+-- Try performing the same query as in question 1 without using an aggregation function.
+select o.occurred_at as , o.id
+from orders o
+order by o.occurred_at 
+limit 1
+-- When did the most recent (latest) web_event occur?
+select max(w.occurred_at) as latest_order
+from web_events w
+-- Try to perform the result of the previous query without using an aggregation function.
+select w.occurred_at as earliest, w.id
+from web_events w
+order by w.occurred_at Desc
+limit 1
+-- Find the mean (AVERAGE) amount spent per order on each paper type, as well as the mean amount of each paper type
+--  purchased per order. Your final answer should have 6 values - one for each paper type for the average number of 
+--  sales, as well as the average amount.
+select avg(o.gloss_qty) as gq, 
+avg(o.standard_qty) as sq,
+avg(o.poster_qty) as pq, 
+avg(o.gloss_amt_usd) as ga,
+avg(o.standard_amt_usd) as sa,
+avg(o.poster_amt_usd) as pa
+
+from orders o
+
+-- udacity solution (more organized)
+SELECT AVG(standard_qty) mean_standard, AVG(gloss_qty) mean_gloss, 
+        AVG(poster_qty) mean_poster, AVG(standard_amt_usd) mean_standard_usd, 
+        AVG(gloss_amt_usd) mean_gloss_usd, AVG(poster_amt_usd) mean_poster_usd
+FROM orders;
+
+-- Via the video, you might be interested in how to calculate the MEDIAN. Though this is more advanced than what we 
+-- have covered so far try finding - what is the MEDIAN total_usd spent on all orders?
+
+--my incomplete solutions (i continued later on calc :D)
+select o.total_amt_usd
+from orders o 
+order by o.total_amt_usd Desc
+limit 3457
+-- answer 172541
+-- Congrats, you solved half of it 
+
+--udacity Solution
+
+SELECT *
+FROM (SELECT total_amt_usd
+   FROM orders
+   ORDER BY total_amt_usd
+   LIMIT 3457) AS Table1
+ORDER BY total_amt_usd DESC
+LIMIT 2;
 
 
--- This is actually a nice way to do things because you know you’re going to get
---  the correct aggregates. If SQL cuts the table down to 100 rows, then performed
---   the aggregations, your results would be substantially different. The above 
---   query’s results exceed 100 rows, so it’s a perfect example.
---    In the next concept, use the SQL environment to try removing the LIMIT and 
---    running it again to see what changes.
+-- Since there are 6912 orders - we want the average of the 3457 and 3456 order amounts when ordered.
+--  This is the average of 2483.16 and 2482.55. This gives the median of 2482.855. This obviously isn't an ideal way
+--   to compute. If we obtain new orders, we would have to change the limit. SQL didn't even calculate the median for us.
+--    The above used a SUBQUERY, but you could use any method to find the two necessary values, and then 
+--    you just need the average of them.
 
--- Query 2:
-SELECT account_id,
-       SUM(standard_qty) AS standard,
-       SUM(gloss_qty) AS gloss,
-       SUM(poster_qty) AS poster
-FROM orders
-GROUP BY account_id
-ORDER BY account_id
-
--- GROUP BY Note
-
--- One part that can be difficult to recognize is when it might be easiest to use 
--- an aggregate or one of the other SQL functionalities. Try some of the below to
---  see if you can differentiate to find the easiest solution.
-
--- Which account (by name) placed the earliest order? Your solution should have 
--- the account name and the date of the order.
-
-
--- Find the total sales in usd for each account. You should include two columns - the total sales for each company's orders in usd and the company name.
-Via what channel did the most recent (latest) web_event occur, which account was associated with this web_event? Your query should return only three values - the date, channel, and account name.
-Find the total number of times each type of channel from the web_events was used. Your final table should have two columns - the channel and the number of times the channel was used.
-Who was the primary contact associated with the earliest web_event?
-What was the smallest order placed by each account in terms of total usd. Provide only two columns - the account name and the total usd. Order from smallest dollar amounts to largest.
-Find the number of sales reps in each region. Your final table should have two columns - the region and the number of sales_reps. Order from the fewest reps to most reps.
