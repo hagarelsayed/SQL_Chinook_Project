@@ -24,8 +24,10 @@ Limit 10
 -- From my query, I found that all of the customers have a connection to Rock music (you could see this by looking at the original length
 --  of the customers table). Your final table should have 59 rows and 4 columns (if you want to check the connection to 'Rock' music). 
 --  The header of this table is provided below.
+-----------------------------------------------------------------------------------------------------------------------------
 
-Select  c.firstname , c.lastname , c.email, G.Name
+/* Query 2 */
+Select c.firstname , c.lastname , c.email, G.Name 
 FROM Genre G 
 JOIN Track T 
 ON G.GenreId = T.GenreId
@@ -34,12 +36,51 @@ on Il.trackId = T.trackId
 Join Invoice I 
 On I.InvoiceId = il.InvoiceId
 join customer c
-ON c.CustomerId = I.InvoiceId
-where G.name = 'Rock' or T.GenreId = 1 
+ON c.CustomerId = I.CustomerId
+where G.name = 'Rock' 
 group by c.Email
 order by c.email
 
 -- There is an error as it yield 36 meanwhile it supposed to show 59
+
+--another trial ,worked fine 
+Select Distinct  c.firstname , c.lastname , c.email, G.Name 
+FROM Genre G 
+JOIN Track T 
+ON G.GenreId = T.GenreId
+Join InvoiceLine Il
+on Il.trackId = T.trackId
+Join Invoice I 
+On I.InvoiceId = il.InvoiceId
+join customer c
+ON c.CustomerId = I.CustomerId
+where G.name = 'Rock' 
+--group by c.Email
+order by c.email
+
+
+
+-- More insight for the chart
+Select Distinct  c.firstname , c.lastname , c.email, G.Name , count (G.Name) as preferred 
+FROM Genre G 
+JOIN Track T 
+ON G.GenreId = T.GenreId
+Join InvoiceLine Il
+on Il.trackId = T.trackId
+Join Invoice I 
+On I.InvoiceId = il.InvoiceId
+join customer c
+ON c.CustomerId = I.CustomerId
+group by (g.name)
+
+
+
+---------------------------------------------------------------------------------------------------------------------------------------
+--Question 3: Who is writing the rock music?
+--Now that we know that our customers love rock music, we can decide which musicians to invite to play at the concert.
+-- Let's invite the artists who have written the most rock music in our dataset.
+-- Write a query that returns the Artist name and total track count of the top 10 rock bands.
+-- You will need to use the Genre, Track , Album, and Artist tables.
 
 
 

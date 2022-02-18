@@ -117,15 +117,21 @@ on s.region_id = r.id
        on o.account_id = a.id 
 
 -- Expert Tip
--- You have had a bit of an introduction to these one-to-one and one-to-many relationships when we introduced PKs and FKs. Notice, traditional databases do not allow for many-to-many relationships, as these break the schema down pretty quickly. A very good answer is provided here.
+-- You have had a bit of an introduction to these one-to-one and one-to-many relationships when we introduced PKs and FKs.
+-- Notice, traditional databases do not allow for many-to-many relationships, as these break the schema down pretty quickly. 
+--A very good answer is provided here.
 
--- The types of relationships that exist in a database matter less to analysts, but you do need to understand why you would perform different types of JOINs, and what data you are pulling from the database. These ideas will be expanded upon in the next concepts.
+-- The types of relationships that exist in a database matter less to analysts, but you do need to understand why you would perform 
+--different types of JOINs, and what data you are pulling from the database. These ideas will be expanded upon in the next concepts.
 
 -- left Join
 
--- Notice each of these new JOIN statements pulls all the same rows as an INNER JOIN, which you saw by just using JOIN, but they also potentially pull some additional rows.
+-- Notice each of these new JOIN statements pulls all the same rows as an INNER JOIN, which you saw by just using JOIN, 
+--but they also potentially pull some additional rows.
 
--- If there is not matching information in the JOINed table, then you will have columns with empty cells. These empty cells introduce a new data type called NULL. You will learn about NULLs in detail in the next lesson, but for now you have a quick introduction as you can consider any cell without data as NULL.
+-- If there is not matching information in the JOINed table, then you will have columns with empty cells.
+-- These empty cells introduce a new data type called NULL. You will learn about NULLs in detail in the next lesson,
+-- but for now you have a quick introduction as you can consider any cell without data as NULL.
 
 SELECT a.id, a.name, o.total
 FROM orders o -- the table on the left with many rows to add

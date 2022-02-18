@@ -32,8 +32,43 @@ order by BillingCountry
 -- Question 3: Who is the best customer?
 -- The customer who has spent the most money will be declared the best customer.
 --  Build a query that returns the person who has spent the most money.
+--trial1
+SELECT c.FirstName, c.LastName , i.total , il.quantity, il.unitprice
+FROM customer c 
+JOIN Invoice I
+ON c.CustomerId = I.CustomerId
+JOIN InvoiceLine Il 
+on I.InvoiceId = InvoiceId
+WHERE c.CustomerId = 6
+ORDER BY i.total DESC
+LIMIT 10
+
+--trial2
+SELECT c.CustomerId, c.FirstName, c.LastName , sum(i.total) Sum , il.quantity, il.unitprice, sum(total) as sum
+FROM customer c 
+JOIN Invoice I
+ON c.CustomerId = I.CustomerId
+JOIN InvoiceLine Il 
+on I.InvoiceId = il.InvoiceId
+WHERE c.CustomerId = 6
+group by 1
+order by
+Limit 4
+
+--trial3 #worked
+SELECT c.CustomerId, c.FirstName , sum(i.total) Sum , sum(il.quantity) quant, sum(il.unitprice) price
+FROM customer c 
+JOIN Invoice I
+ON c.CustomerId = I.CustomerId
+JOIN InvoiceLine Il 
+on I.InvoiceId = il.InvoiceId
+group by I.CustomerId
+order by Sum DESC 
+Limit 1
 
 
+plot :
+Interpretation :
 
 -----------------
 -- My Questions--
