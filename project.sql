@@ -28,6 +28,13 @@ from invoice
 group by BillingCountry
 order by BillingCountry  
 
+
+-- Question 3: Who is the best customer?
+-- The customer who has spent the most money will be declared the best customer.
+--  Build a query that returns the person who has spent the most money.
+
+
+
 -----------------
 -- My Questions--
 -----------------
@@ -83,12 +90,12 @@ limit 3
 
 
 
-So the key for this question is understanding that one country could have multiple values if more than one customer in this country have the maximum value in this country. To solve it:
- Calculate the maximum value for a customer for each country
- Calculate the total for each user in each country
- Check if the total for the customer in the country is equal to the max for the country.
+-- So the key for this question is understanding that one country could have multiple values if more than one customer in this country have the maximum value in this country. To solve it:
+--  Calculate the maximum value for a customer for each country
+--  Calculate the total for each user in each country
+--  Check if the total for the customer in the country is equal to the max for the country.
 
-Please not that the code below can be done in a more efficient way bit this is a detailed code with the steps above fore clarity.
+-- Please not that the code below can be done in a more efficient way bit this is a detailed code with the steps above fore clarity.
  WITH max_val AS
  (SELECT t.country, MAX(mVal) AS maxim
  FROM
