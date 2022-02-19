@@ -126,7 +126,8 @@ ORDER BY smallest_order;
 --########################
 -- Distinct
 --########################
--- DISTINCT is always used in SELECT statements, and it provides the unique rows for all columns written in the SELECT statement. Therefore, you only use DISTINCT once in any particular SELECT statement.
+-- DISTINCT is always used in SELECT statements, and it provides the unique rows for all columns written in the SELECT statement.
+-- Therefore, you only use DISTINCT once in any particular SELECT statement.
 
 -- You could write:
 

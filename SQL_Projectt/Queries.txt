@@ -1,0 +1,57 @@
+/*Query 1*/
+
+SELECT c.CustomerId,
+       c.FirstName,
+       sum(il.unitprice) Price
+FROM customer c
+JOIN Invoice I ON c.CustomerId = I.CustomerId
+JOIN InvoiceLine Il ON I.InvoiceId = il.InvoiceId
+GROUP BY I.CustomerId
+ORDER BY price DESC
+LIMIT 10
+
+
+/* Query 2 */
+
+SELECT A.name,
+       count(t.name) AS Songs
+FROM artist A
+JOIN Album Al ON A.ArtistId = Al.ArtistId
+JOIN Track t ON Al.AlbumId = T.AlbumId
+JOIN Genre G ON g.GenreId = t.GenreId
+WHERE g.name = 'Rock'
+GROUP BY A.name
+ORDER BY Songs DESC
+LIMIT 10
+
+/* Query 3 */
+
+SELECT A.artistid,
+       A.name ,
+       sum(il.UnitPrice) AS Purchased_songs
+FROM artist A
+JOIN Album Al ON A.ArtistId = Al.ArtistId
+JOIN Track t ON Al.AlbumId = T.AlbumId
+JOIN InvoiceLine Il ON il.trackId = t.trackId
+GROUP BY A.artistId
+ORDER BY purchased_songs DESC
+LIMIT 10
+
+/* Query 4 */
+
+SELECT A.name Name,
+       sum(il.UnitPrice) AmountSpent,
+       c.CustomerId CustomerId,
+       c.firstname FirstName,
+       c.LastName LastName
+FROM artist A
+JOIN Album Al ON A.ArtistId = Al.ArtistId
+JOIN Track t ON Al.AlbumId = T.AlbumId
+JOIN InvoiceLine Il ON il.trackId = t.trackId
+JOIN Invoice I ON I.InvoiceId = il.InvoiceId
+JOIN customer c ON c.CustomerId = I.CustomerId
+WHERE A.name = 'Iron Maiden'
+  OR A.ArtistId = 90
+GROUP BY c.CustomerId
+ORDER BY AmountSpent DESC
+LIMIT 8
